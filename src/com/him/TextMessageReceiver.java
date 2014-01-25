@@ -38,6 +38,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","Really busy. Call ya later","Wassup","Fucking your girlfriend","Sup"};
 	private String closers[] = new String[]{"Bye","l8er","Later","Cya","Ttyl"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
+	private boolean alchemyFlag =true;
 	
 	public void onReceive(final Context context, Intent intent)
 	{
@@ -52,13 +53,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		String output = "Default";
 		
-		
-		if(Arrays.asList(simpleInitiators).contains(msg.getMessageBody().toLowerCase())){
-			Random rand = new Random();
-			int index = rand.nextInt(4);
-			output = Arrays.asList(simpleInitiators).get(index);
-		} 
-		else {			
+		for(int i = 0; i < simpleInitiators.length; i++){
+				if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
+					Random rand = new Random();
+					int index = rand.nextInt(4);
+					output = Arrays.asList(simpleInitiators).get(index);
+					alchemyFlag = false;
+					break; 
+				} 
+						
+		}
+		if(alchemyFlag){
 			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 		}
 
