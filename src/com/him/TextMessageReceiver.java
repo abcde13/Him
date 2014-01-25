@@ -88,6 +88,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
 						
 			}
 		} 
+		
+		if(output.equals("Default")){
+			if(msg.getMessageBody().toLowerCase().equals("really?")) {
+				Random rand = new Random();
+				int index = rand.nextInt(2);
+				if(index == 0)
+					output = "Really";
+				else
+					output = "No...I was clearly just making it up...no shit Sherlock";
+				alchemyFlag = false;
+			}
+		}
+		
 		if(alchemyFlag){
 			
 			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
