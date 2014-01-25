@@ -35,7 +35,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
 	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
-	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","Really busy. Call ya later","Wassup","Fucking your girlfriend","Sup"};
+	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
+	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","really busy. call ya later","wassup","fucking your girlfriend","sup"};
 	private String closers[] = new String[]{"Bye","l8er","Later","Cya","Ttyl"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private boolean alchemyFlag =true;
@@ -61,8 +62,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					alchemyFlag = false;
 					break; 
 				} 
-						
 		}
+		
+		for(int i = 0; i < testSupInitiators.length; i++){
+			if(msg.getMessageBody().toLowerCase().contains(testSupInitiators[i])){
+				Random rand = new Random();
+				int index = rand.nextInt(6);
+				output = Arrays.asList(supInitiators).get(index);
+				alchemyFlag = false;
+				break; 
+			} 
+					
+		}
+		
 		if(alchemyFlag){
 			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 		}
