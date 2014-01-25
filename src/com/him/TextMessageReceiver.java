@@ -1,6 +1,11 @@
 package com.him;
 
 
+import org.w3c.dom.Document;
+
+import com.orchestr8.android.api.AlchemyAPI;
+import com.orchestr8.android.api.AlchemyAPI_NamedEntityParams;
+
 import simplenlg.framework.NLGElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
@@ -19,7 +24,7 @@ import android.telephony.SmsMessage;
 
 
 public class TextMessageReceiver extends BroadcastReceiver{
-	
+	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	public void onReceive(final Context context, Intent intent)
 	{
 		Bundle bundle=intent.getExtras();
@@ -34,12 +39,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		/*MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
 				"Message: "+msg.getMessageBody()+"\n");*/
-		if(msg.getMessageBody().equals("Hey man"))
-		{
-			System.out.println("Yo sup!");
-		} else {
-			System.out.println("SHIt");
-		}
+		System.out.println("HERE");
+		SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+
 		Intent i= new Intent(context,ReceiverService.class);
 		final PendingIntent pi = PendingIntent.getService(context, 0, i, 0);                
         final SmsManager sendsms = SmsManager.getDefault();
@@ -100,5 +102,55 @@ public class TextMessageReceiver extends BroadcastReceiver{
 
          return output;
 	}
+	
+	 private void SendAlchemyCall(String call, String msg)
+	    {
+	    	Document doc = null;
+	    	AlchemyAPI api = null;
+	    	try
+	    	{
+	    		api = AlchemyAPI.GetInstanceFromString(AlchemyAPI_Key);
+	    	}
+	    	catch( IllegalArgumentException ex )
+	    	{
+	    		System.out.println("Error loading AlchemyAPI.  Check that you have a valid AlchemyAPI key set in the AlchemyAPI_Key variable.  Keys available at alchemyapi.com.");
+	    		return;
+	    	}
+
+	    	try{
+	    		/*if( "concept".equals(call) )
+	    		{
+	    			doc = api.URLGetRankedConcepts(someString);
+	    			ShowDocInTextView(doc, false);
+	    		}
+	    		else if( "entity".equals(call))
+	    		{
+	    			doc = api.URLGetRankedNamedEntities(someString);
+	    			ShowDocInTextView(doc, false);
+	    		}
+	    		else if( "keyword".equals(call))
+	    		{*/
+	    			doc = api.TextGetRankedKeywords(msg);
+	    			System.out.println(doc);
+	    		/*}
+	    		else if( "text".equals(call))
+	    		{
+	    			doc = api.URLGetText(someString);
+	    			ShowDocInTextView(doc, false);
+	    		}
+	    		else if( "sentiment".equals(call))
+	    		{
+	    			AlchemyAPI_NamedEntityParams nep = new AlchemyAPI_NamedEntityParams();
+	    			nep.setSentiment(true);
+	    			doc = api.URLGetRankedNamedEntities(someString, nep);
+	    			ShowDocInTextView(doc, true);
+	    		}*/
+	    		
+	    	}
+	    	catch(Throwable t)
+	    	{
+	    		System.out.println("Error: " + t.getMessage());
+	    	}
+	    }
 }
 
