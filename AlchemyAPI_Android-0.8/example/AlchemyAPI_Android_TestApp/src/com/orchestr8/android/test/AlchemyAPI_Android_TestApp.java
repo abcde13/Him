@@ -9,8 +9,6 @@ import org.w3c.dom.NodeList;
 import com.orchestr8.android.api.AlchemyAPI;
 import com.orchestr8.android.api.AlchemyAPI_NamedEntityParams;
 
-
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -27,7 +25,7 @@ public class AlchemyAPI_Android_TestApp extends Activity {
 	 * 
 	 * Put your API Key into the variable below.  Can get key from http://www.alchemyapi.com/api/register.html
 	 */
-	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
+	public String AlchemyAPI_Key = "";
 	
     /** Called when the activity is first created. */
     @Override

@@ -2,7 +2,6 @@ package com.him;
 
 import org.w3c.dom.Document;
 
-import com.orchestr8.android.api.AlchemyAPI;
 
 import android.os.Bundle;
 import android.app.Activity;

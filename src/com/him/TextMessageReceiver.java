@@ -41,11 +41,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		for(int n=0;n<1;n++){
 			sms[n]=SmsMessage.createFromPdu((byte[]) messages[n]);
 		}
+		
 			
 		final SmsMessage msg = sms[0];
-		/*MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
-				"Message: "+msg.getMessageBody()+"\n");*/
-		System.out.println("HERE");
 		SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 
 		Intent i= new Intent(context,ReceiverService.class);
