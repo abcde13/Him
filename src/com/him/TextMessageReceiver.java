@@ -31,19 +31,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			sms[n]=SmsMessage.createFromPdu((byte[]) messages[n]);
 		}
 			
-		for(final SmsMessage msg:sms){
-			/*MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
-					"Message: "+msg.getMessageBody()+"\n");*/
-			if(msg.getMessageBody().equals("Hey man"))
-			{
-				System.out.println("Yo sup!");
-			} else {
-				System.out.println("SHIt");
-			}
-			Intent i= new Intent(context,ReceiverService.class);
-			final PendingIntent pi = PendingIntent.getService(context, 0, i, 0);                
-            final SmsManager sendsms = SmsManager.getDefault();
-            // this is the function that does all the magic
+		final SmsMessage msg = sms[0];
+		/*MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
+				"Message: "+msg.getMessageBody()+"\n");*/
+		if(msg.getMessageBody().equals("Hey man"))
+		{
+			System.out.println("Yo sup!");
+		} else {
+			System.out.println("SHIt");
+		}
+		Intent i= new Intent(context,ReceiverService.class);
+		final PendingIntent pi = PendingIntent.getService(context, 0, i, 0);                
+        final SmsManager sendsms = SmsManager.getDefault();
+        // this is the function that does all the magic
             
             Runnable r = new Runnable()
             {
@@ -60,7 +60,6 @@ public class TextMessageReceiver extends BroadcastReceiver{
             
  
 		}
-	}
 	
 	private void handleNotification(Context context, final SmsMessage msg,String output){
 		NotificationCompat.Builder mBuilder =

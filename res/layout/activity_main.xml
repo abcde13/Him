@@ -3,7 +3,6 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:background="@color/blue"
-    android:orientation="vertical"
     android:textAlignment="center"
     android:screenOrientation="portrait" >
 
