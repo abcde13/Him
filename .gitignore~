@@ -5,9 +5,6 @@
 # files for the dex VM
 *.dex
 
-#project.properties
-*.properties
-
 # Java class files
 #*.class
 
