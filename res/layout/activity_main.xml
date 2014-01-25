@@ -1,18 +1,68 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_width="fill_parent"
-   android:layout_height="fill_parent"
-   android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    android:textAlignment="center" >
 
-   <Button android:id="@+id/btnStartService"
-   android:layout_width="fill_parent"
-   android:layout_height="wrap_content"
-   android:text="@string/start_service"
-   android:onClick="startService"/>
+   <Button
+       android:id="@+id/btnStartService"
+       android:layout_width="244dp"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:layout_centerHorizontal="true"
+       android:layout_marginBottom="66dp"
+       android:background="@color/green"
+       android:onClick="startService"
+       android:text="@string/startservice"
+       android:textColor="@color/white"
+       android:textSize="@dimen/activity_text"
+       android:textStyle="bold" />
+
+   <TextView
+       android:id="@+id/TextView02"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+       android:layout_centerHorizontal="true"
+       android:layout_margin="@dimen/button_top_padding"
+       android:layout_marginTop="100dp"
+       android:fontFamily="@string/menu_settings"
+       android:gravity="center"
+       android:text="@string/mottostart"
+       android:textColor="@color/white"
+       android:textSize="@dimen/activity_text"
+       android:textStyle="bold|italic" />
 
    <TextView
        android:id="@+id/messageBox"
-       android:layout_width="wrap_content"
+       android:layout_width="fill_parent"
        android:layout_height="wrap_content"
-       android:text="TextView" />
+       android:layout_above="@+id/btnStartService"
+       android:layout_alignLeft="@+id/TextView01"
+       android:layout_margin="@dimen/button_top_padding"
+       android:layout_marginBottom="62dp"
+       android:fontFamily="@string/menu_settings"
+       android:gravity="center"
+       android:text="@string/mottosmall"
+       android:textColor="@color/white"
+       android:textSize="@dimen/activity_text"
+       android:textStyle="bold|italic" />
 
-</LinearLayout>
+   <TextView
+       android:id="@+id/TextView01"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignRight="@+id/TextView02"
+       android:layout_below="@+id/TextView02"
+       android:layout_margin="@dimen/button_top_padding"
+       android:layout_marginTop="87dp"
+       android:fontFamily="@string/menu_settings"
+       android:gravity="center"
+       android:text="@string/mottomid"
+       android:textColor="@color/white"
+       android:textSize="@dimen/him_size"
+       android:textStyle="bold|italic" />
+
+</RelativeLayout>
