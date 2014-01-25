@@ -35,6 +35,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
 	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
+	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
 	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
@@ -69,6 +70,25 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					Random rand = new Random();
 					int index = rand.nextInt(supInitiators.length);
 					output = supInitiators[index];
+					alchemyFlag = false;
+					break; 
+				} 
+						
+			}
+		}
+		if(output.equals("Default")){
+			for(int i = 0; i < formalTimes.length; i++){
+				System.out.println("HErE " + i);
+				if(msg.getMessageBody().toLowerCase().contains(formalTimes[i])){					
+					if(i == 0){
+						output = "morning";
+					} else if (i == 3 || i == 4){
+						output = "Gdnite";
+					} else {
+						Random rand = new Random();
+						int index = rand.nextInt(2);
+						output = formalTimes[index+1];
+					}
 					alchemyFlag = false;
 					break; 
 				} 
