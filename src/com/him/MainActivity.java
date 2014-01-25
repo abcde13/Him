@@ -1,5 +1,9 @@
 package com.him;
 
+import org.w3c.dom.Document;
+
+import com.orchestr8.android.api.AlchemyAPI;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +14,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	static TextView messageBox;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,5 +38,7 @@ public class MainActivity extends Activity {
     {
     	messageBox.append(msg);
     }
+	
+	
 
 }

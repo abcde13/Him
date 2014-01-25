@@ -1,6 +1,9 @@
 package com.him;
 
 
+import java.net.URL;
+
+import org.apache.http.client.utils.URIUtils;
 import org.w3c.dom.Document;
 
 import com.orchestr8.android.api.AlchemyAPI;
@@ -10,12 +13,14 @@ import simplenlg.framework.NLGElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.realiser.english.Realiser;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -23,6 +28,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
 
+@SuppressLint("NewApi")
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	public void onReceive(final Context context, Intent intent)
@@ -118,39 +124,12 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	    	}
 
 	    	try{
-	    		/*if( "concept".equals(call) )
-	    		{
-	    			doc = api.URLGetRankedConcepts(someString);
-	    			ShowDocInTextView(doc, false);
-	    		}
-	    		else if( "entity".equals(call))
-	    		{
-	    			doc = api.URLGetRankedNamedEntities(someString);
-	    			ShowDocInTextView(doc, false);
-	    		}
-	    		else if( "keyword".equals(call))
-	    		{*/
 	    			doc = api.TextGetRankedKeywords(msg);
-	    			System.out.println(doc);
-	    		/*}
-	    		else if( "text".equals(call))
-	    		{
-	    			doc = api.URLGetText(someString);
-	    			ShowDocInTextView(doc, false);
-	    		}
-	    		else if( "sentiment".equals(call))
-	    		{
-	    			AlchemyAPI_NamedEntityParams nep = new AlchemyAPI_NamedEntityParams();
-	    			nep.setSentiment(true);
-	    			doc = api.URLGetRankedNamedEntities(someString, nep);
-	    			ShowDocInTextView(doc, true);
-	    		}*/
-	    		
+	    			System.out.println(doc +  " " + msg);
 	    	}
 	    	catch(Throwable t)
 	    	{
 	    		System.out.println("Error: " + t.getMessage());
-	    		System.out.println(msg);
 	    	}
 	    }
 }
