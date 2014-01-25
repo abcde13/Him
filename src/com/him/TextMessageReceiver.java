@@ -22,6 +22,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		for(SmsMessage msg:sms){
 			MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
 					"Message: "+msg.getMessageBody()+"\n");
+			if(msg.getMessageBody() == "Hey man")
+			{
+				System.out.println("Yo sup!");
+			}
 		}
 	}
 }
