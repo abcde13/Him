@@ -60,7 +60,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
             {
                 public void run() 
                 {
-                	final String output = generateMessage();
+                	final String output = generateMessage("none",null);
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
                     handleNotification(context,msg,output);
                     
@@ -102,12 +102,16 @@ public class TextMessageReceiver extends BroadcastReceiver{
         mNotificationManager.notify(13, mBuilder.build());
 	}
 	
-	private String generateMessage(){
-		 Lexicon lexicon = Lexicon.getDefaultLexicon();
-         NLGFactory nlgFactory = new NLGFactory(lexicon);
-         Realiser realiser = new Realiser(lexicon);
-         NLGElement s1 = nlgFactory.createSentence("my dog is happy");
-         String output = realiser.realiseSentence(s1);
+	private String generateMessage(String type, String[] necessities){
+		String output = "";
+		Lexicon lexicon = Lexicon.getDefaultLexicon();
+        NLGFactory nlgFactory = new NLGFactory(lexicon);
+        Realiser realiser = new Realiser(lexicon);
+		if(type == "simple"){
+
+			NLGElement s1 = nlgFactory.createSentence("");
+			output = realiser.realiseSentence(s1);
+		}
 
          return output;
 	}
