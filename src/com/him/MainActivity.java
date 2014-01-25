@@ -5,6 +5,8 @@ import org.w3c.dom.Document;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -28,9 +30,23 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	private boolean isMyServiceRunning() {
+	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if (ReceiverService.class.getName().equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
 	// Method to start the service
 	public void startService(View view) {
-	   startService(new Intent(getBaseContext(), ReceiverService.class));
+		if(isMyServiceRunning())
+		{
+			return;
+		}
+		startService(new Intent(getBaseContext(), ReceiverService.class));
 	}
 	
 	public static void updateMessageBox(String msg)

@@ -2,6 +2,8 @@ package com.him;
 
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Random;
 
 import org.apache.http.client.utils.URIUtils;
 import org.w3c.dom.Document;
@@ -32,8 +34,11 @@ import android.telephony.SmsMessage;
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
-	private String  simpleInitiators[] = new String[]{"Hi","Hello", "hey","G'morning","G'evening","Gdnite"};
-	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","really busy. call ya later","wassup","fucking your gf","whatsup?"};
+	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
+	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","Really busy. Call ya later","Wassup","Fucking your girlfriend","Sup"};
+	private String closers[] = new String[]{"Bye","l8er","Later","Cya","Ttyl"};
+	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
+	
 	public void onReceive(final Context context, Intent intent)
 	{
 		Bundle bundle=intent.getExtras();
@@ -44,21 +49,30 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		for(int n=0;n<1;n++){
 			sms[n]=SmsMessage.createFromPdu((byte[]) messages[n]);
 		}
-		
-			
 		final SmsMessage msg = sms[0];
-		SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+		String output = "";
+		
+		
+		if(Arrays.asList(simpleInitiators).contains(msg.getMessageBody().toLowerCase())){
+			Random rand = new Random();
+			int index = rand.nextInt(4);
+			output = Arrays.asList(simpleInitiators).get(index);
+		} 
+		else {			
+			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+		}
 
 		Intent i= new Intent(context,ReceiverService.class);
 		final PendingIntent pi = PendingIntent.getService(context, 0, i, 0);                
         final SmsManager sendsms = SmsManager.getDefault();
+        final String out = output;
         // this is the function that does all the magic
             
             Runnable r = new Runnable()
             {
                 public void run() 
                 {
-                	final String output = generateMessage();
+                	final String output = generateMessage(out);
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
                     handleNotification(context,msg,output);
                     
@@ -100,11 +114,11 @@ public class TextMessageReceiver extends BroadcastReceiver{
         mNotificationManager.notify(13, mBuilder.build());
 	}
 	
-	private String generateMessage(){
+	private String generateMessage(String msg){
 		 Lexicon lexicon = Lexicon.getDefaultLexicon();
          NLGFactory nlgFactory = new NLGFactory(lexicon);
          Realiser realiser = new Realiser(lexicon);
-         NLGElement s1 = nlgFactory.createSentence("my dog is happy");
+         NLGElement s1 = nlgFactory.createSentence(msg);
          String output = realiser.realiseSentence(s1);
 
          return output;
