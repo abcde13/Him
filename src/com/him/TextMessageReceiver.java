@@ -20,6 +20,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,10 +43,15 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private boolean alchemyFlag =true;
+	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
+	private static final String MESSAGE_BODY_FIELD_NAME = "body";
+	private static final Uri SENT_MSGS_CONTET_PROVIDER = Uri.parse("content://sms/sent");
 	
 	public void onReceive(final Context context, Intent intent)
 	{
 		Bundle bundle=intent.getExtras();
+		
+		
 		
 		Object[] messages=(Object[])bundle.get("pdus");
 		SmsMessage[] sms=new SmsMessage[messages.length];
@@ -126,6 +133,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
                 	final String output = generateMessage(out);
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
                     handleNotification(context,msg,output);
+                    addMessageToSent(context,msg.getOriginatingAddress(),msg.getMessageBody());
+                    
                     
                 }
             };
@@ -175,6 +184,14 @@ public class TextMessageReceiver extends BroadcastReceiver{
 
          return output;
 	}
+	private void addMessageToSent(Context context,String telNumber, String messageBody) {
+        ContentValues sentSms = new ContentValues();
+        sentSms.put(TELEPHON_NUMBER_FIELD_NAME, telNumber);
+        sentSms.put(MESSAGE_BODY_FIELD_NAME, messageBody);
+
+        ContentResolver contentResolver = context.getContentResolver();
+        contentResolver.insert(SENT_MSGS_CONTET_PROVIDER, sentSms);
+    }
 	
 	 private void SendAlchemyCall(String call, String msg)
 	    {
