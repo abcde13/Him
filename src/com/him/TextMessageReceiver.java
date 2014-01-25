@@ -36,7 +36,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	
 	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
 	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","Really busy. Call ya later","Wassup","Fucking your girlfriend","Sup"};
-	private String closers[] = new String[]{"Bye","l8er","Later","Cya","Ttyl"};
+	private String closers[] = new String[]{"Bye","l8er","Later","Cya","Ttyl","bb"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private boolean alchemyFlag =true;
 	
@@ -56,12 +56,24 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		for(int i = 0; i < simpleInitiators.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
 					Random rand = new Random();
-					int index = rand.nextInt(4);
-					output = Arrays.asList(simpleInitiators).get(index);
+					int index = rand.nextInt(simpleInitiators.length);
+					output = simpleInitiators[index];
 					alchemyFlag = false;
 					break; 
 				} 
 						
+		}
+		if(output=="Default"){
+			for(int i = 0; i < closers.length; i++){
+				if(msg.getMessageBody().toLowerCase().contains(closers[i])){
+					Random rand = new Random();
+					int index = rand.nextInt(closers.length);
+					output =closers[index];
+					alchemyFlag = false;
+					break; 
+				} 
+						
+			}
 		}
 		if(alchemyFlag){
 			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
