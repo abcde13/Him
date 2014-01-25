@@ -31,6 +31,9 @@ import android.telephony.SmsMessage;
 @SuppressLint("NewApi")
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
+	
+	private String  simpleInitiators[] = new String[]{"Hi","Hello", "hey","G'morning","G'evening","Gdnite"};
+	private String supInitiators[] = new String[]{"Nothing much. u?","Bored as fuck","really busy. call ya later","wassup","fucking your gf","whatsup?"};
 	public void onReceive(final Context context, Intent intent)
 	{
 		Bundle bundle=intent.getExtras();
@@ -71,7 +74,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Him to" + msg.getOriginatingAddress())
+                .setContentTitle("Him to " + msg.getOriginatingAddress())
                 .setContentText(output);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
