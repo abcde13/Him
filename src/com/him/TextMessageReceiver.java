@@ -40,7 +40,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		/*MainActivity.updateMessageBox("\nFrom: "+msg.getOriginatingAddress()+"\n"+
 				"Message: "+msg.getMessageBody()+"\n");*/
 		System.out.println("HERE");
-		//SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+		SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 
 		Intent i= new Intent(context,ReceiverService.class);
 		final PendingIntent pi = PendingIntent.getService(context, 0, i, 0);                
@@ -150,6 +150,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	    	catch(Throwable t)
 	    	{
 	    		System.out.println("Error: " + t.getMessage());
+	    		System.out.println(msg);
 	    	}
 	    }
 }
