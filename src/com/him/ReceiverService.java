@@ -16,12 +16,16 @@ public class ReceiverService extends Service {
    @Override
    public int onStartCommand(Intent intent, int flags, int startId) {
       // Let it continue running until it is stopped.
-      Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-      
-      TextMessageReceiver mSmsReceiver = new TextMessageReceiver();
-      IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-      filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-      this.registerReceiver(mSmsReceiver, filter);
+	   
+	  if((MainActivity.receiving) == 0){
+	      Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+	      
+	      TextMessageReceiver mSmsReceiver = new TextMessageReceiver();
+	      IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+	      filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+	      this.registerReceiver(mSmsReceiver, filter);
+	      MainActivity.receiving = 1;
+	  }
       
       return START_STICKY;
       
