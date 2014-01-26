@@ -59,15 +59,28 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
 	private static final Uri SENT_MSGS_CONTET_PROVIDER = Uri.parse("content://sms/sent");
 	private ArrayList<String> words;
+	
+	private String insultKeywords[] = new String[]{"fuck","cunt","douche","dick","chode","bitch","pussy","fag","slut","bastard",
+			"vegan","jizz","tiny","twat","shit","cock"};
+	
+	private String insultLibrary[] = new String[]{"Lick my shit","You jizz covered asshole","I do not give a flying fuck about you or your problems",
+			"I'd trade you for a bag of cunts in an instant","Go jerk your chode","Come at me tiny man - I bench 300","Would you like a side of fucks with that?",
+			"Congratulations!,you've been nominated for biggest douche in the universe!","Hey! I heard ur dick has grown to four sand grain radii! Well done!",
+			"U mad bro? U should be. Ur getting pwned by a computer program", "Well good morning professor dickweed", "I will wreck you like an Asian driver",
+			"Man you must love just getting on your knees","You're as useless as a GTA stoplight"};
 
-	private int hour;
+//	private int hour;
 	
 	public void onReceive(final Context context, Intent intent)
 	{
+<<<<<<< HEAD
 		alchemyFlag = true;
 		Bundle bundle=intent.getExtras();
 		
 		
+=======
+		Bundle bundle=intent.getExtras();	
+>>>>>>> 4e9d93ee5ef58162d635a4cb365f3cdfa4e6d788
 		
 		Object[] messages=(Object[])bundle.get("pdus");
 		SmsMessage[] sms=new SmsMessage[messages.length];
@@ -146,6 +159,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				alchemyFlag = false;
 			}
 		}
+		
+		if(output.equals("Default")){
+			for(int i = 0; i < insultKeywords.length; i++){
+				if(msg.getMessageBody().toLowerCase().contains(insultKeywords[i])){
+					Random rand = new Random();
+					int index = rand.nextInt(insultLibrary.length);
+					output=insultLibrary[index];
+					alchemyFlag = false;
+					break; 
+				} 
+						
+			}
+		} 
 		
 		if(alchemyFlag){
 			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
