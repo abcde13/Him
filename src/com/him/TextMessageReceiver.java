@@ -42,7 +42,7 @@ import android.telephony.SmsMessage;
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
-	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
+	private String simpleInitiators[] = new String[]{"hi ","hello ","hey ","yo "};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
 	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
@@ -72,8 +72,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		String output = "Default";
 		
-		if(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[0]) || 
-				(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[1])) && 
+		if((msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[0]) || 
+				(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[1]))) && 
 				msg.getMessageBody().length() < 6){
 			return;
 		}
@@ -210,7 +210,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
         // NLGElement s1 = nlgFactory.createSentence(msg);
         // String output = realiser.realiseSentence(s1);
          SPhraseSpec p = nlgFactory.createClause();
-         p.setSubject("The" + words.get(2));
+         p.setSubject("The " + words.get(2));
          p.setVerb("is ");
          
          Random rand = new Random();
