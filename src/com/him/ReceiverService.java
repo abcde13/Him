@@ -25,8 +25,6 @@ public class ReceiverService extends Service {
 	      filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 	      this.registerReceiver(mSmsReceiver, filter);
 	      MainActivity.receiving = 1;
-	  } else {
-		  Toast.makeText(this, "He is already monitoring your texts", Toast.LENGTH_LONG).show();
 	  }
       
       return START_STICKY;
@@ -36,6 +34,7 @@ public class ReceiverService extends Service {
    @Override
    public void onDestroy() {
       super.onDestroy();
+      MainActivity.receiving = 0;
       Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
    }
 }

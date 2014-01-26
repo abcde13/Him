@@ -10,12 +10,14 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
 
 	static TextView messageBox;
+	static Button button;
 	public static int receiving = 0;
 
 
@@ -24,6 +26,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	    messageBox=(TextView)findViewById(R.id.messageBox);
+	    button = (Button)findViewById(R.id.btnStartService);
 	}
 
 	@Override
@@ -47,9 +50,12 @@ public class MainActivity extends Activity {
 	public void startService(View view) {
 		if(isMyServiceRunning())
 		{
-			return;
+			stopService(new Intent(getBaseContext(), ReceiverService.class));
+			button.setText("Hell yeah baby!");
+		} else {
+			button.setText("Stop him now");
+			startService(new Intent(getBaseContext(), ReceiverService.class));
 		}
-		startService(new Intent(getBaseContext(), ReceiverService.class));
 	}
 	
 	public static void updateMessageBox(String msg)

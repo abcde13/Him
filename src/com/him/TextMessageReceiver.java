@@ -153,7 +153,11 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			{
 				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
 				{
-					output = generateMessage(words, "what"); 
+					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
+						output = generateMessage(words, "who");
+					} else {
+						output = generateMessage(words, "what"); 
+					}
 				} 
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
 				{
