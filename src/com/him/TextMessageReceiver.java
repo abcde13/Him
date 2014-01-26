@@ -47,7 +47,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
 	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
-	private String timeFrames[] = new String[]{"at night","in the evening","in the morning","on the morrow","at twilight","before the break of dawn"};
+	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
 			"I don't know. you'll have to ask someone else", "Sorry, I have no idea"};
@@ -145,17 +145,25 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		}
 		
 		if(alchemyFlag){
-			
 			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 			for(int i =0; i < words.size(); i++){
 				System.out.println(words.get(i));
-			}	
-			if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what")){
-				output = generateMessage(words, "what"); 
-			} else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who")){
-				output = generateMessage(words, "who"); 
 			}
-
+			if(msg.getMessageBody().contains("?"))
+			{
+				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
+				{
+					output = generateMessage(words, "what"); 
+				} 
+				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
+				{
+					output = generateMessage(words, "who"); 
+				}
+				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
+				{
+					output = generateMessage(words, "when"); 
+				}
+			}
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
@@ -231,6 +239,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
         	 Random rand = new Random();
         	 int r = rand.nextInt(who.length);
         	 return who[r];
+         } else if(key.equals("when")){
+        	 Random rand = new Random();
+        	 int r = rand.nextInt(timeFrames.length);
+        	 return timeFrames[r];
          }
          return("I litterally have no clue.");
 	}
