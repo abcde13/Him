@@ -63,7 +63,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private ArrayList<String> words;
 	
 	private String insultKeywords[] = new String[]{"fuck","cunt","douche","dick","chode","bitch","pussy","fag","slut","bastard",
-			"vegan","jizz","tiny","twat","shit","cock","milf"};
+			"vegan","jizz","tiny","twat","shit","cock","milf","whore"};
 	
 	private String insultLibrary[] = new String[]{"Lick my shit","You jizz covered asshole","I do not give a flying fuck about you or your problems",
 			"I'd trade you for a bag of cunts in an instant","Go jerk your chode","Come at me tiny man - I bench 300","Would you like a side of fucks with that?",
