@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 
 public class ReceiverService extends Service {
+	
+	
+	private TextMessageReceiver mSmsReceiver;
+	
    @Override
    public IBinder onBind(Intent arg0) {
       return null;
@@ -20,7 +24,7 @@ public class ReceiverService extends Service {
 	  if((MainActivity.receiving) == 0){
 	      Toast.makeText(this, "He is now monitoring your texts", Toast.LENGTH_LONG).show();
 	      
-	      TextMessageReceiver mSmsReceiver = new TextMessageReceiver();
+	      mSmsReceiver = new TextMessageReceiver();
 	      IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 	      filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 	      this.registerReceiver(mSmsReceiver, filter);
@@ -35,6 +39,7 @@ public class ReceiverService extends Service {
    public void onDestroy() {
       super.onDestroy();
       MainActivity.receiving = 0;
+      //this.unregisterReceiver(mSmsReceiver);
       Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
    }
 }

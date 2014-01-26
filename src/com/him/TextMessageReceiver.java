@@ -16,6 +16,8 @@ import org.w3c.dom.NodeList;
 import com.orchestr8.android.api.AlchemyAPI;
 import com.orchestr8.android.api.AlchemyAPI_NamedEntityParams;
 
+import simplenlg.features.Feature;
+import simplenlg.features.Tense;
 import simplenlg.framework.NLGElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
@@ -45,7 +47,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String simpleInitiators[] = new String[]{"hi ","hello ","hey ","yo "};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
-	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
+	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","whats up", "what's up","how's it going"};
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
 	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
@@ -72,7 +74,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			sms[n]=SmsMessage.createFromPdu((byte[]) messages[n]);
 		}
 		final SmsMessage msg = sms[0];
-		String output = "Default";
+		String output = "Talk to u in a bit. Pretty busy";
 		
 		if((msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[0]) || 
 				(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[1]))) && 
@@ -88,8 +90,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					break; 
 				} 
 		}
-		if(output.equals("Default")){
-			for(int i = 0; i < testSupInitiators.length; i++){
+		for(int i = 0; i < testSupInitiators.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(testSupInitiators[i])){
 					Random rand = new Random();
 					int index = rand.nextInt(supInitiators.length);
@@ -98,10 +99,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					break; 
 				} 
 						
-			}
 		}
-		if(output.equals("Default")){
-			for(int i = 0; i < formalTimes.length; i++){
+		for(int i = 0; i < formalTimes.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(formalTimes[i])){					
 					if(i == 0){
 						output = "morning";
@@ -116,10 +115,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					break; 
 				} 
 						
-			}
 		}
 
-		if(output.equals("Default")){
+		if(output.equals("Talk to u in a bit. Pretty busy")){
 			for(int i = 0; i < closers.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(closers[i])){
 					Random rand = new Random();
@@ -132,17 +130,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			}
 		} 
 		
-		if(output.equals("Default")){
-			if(msg.getMessageBody().toLowerCase().equals("really?")) {
-				Random rand = new Random();
-				int index = rand.nextInt(2);
-				if(index == 0)
-					output = "Really";
-				else
-					output = "No...I was clearly just making it up...no shit Sherlock";
-				alchemyFlag = false;
-			}
+		//if(output.equals("Talk to u in a bit. Pretty busy")){
+		if(msg.getMessageBody().toLowerCase().equals("really?")) {
+			Random rand = new Random();
+			int index = rand.nextInt(2);
+			if(index == 0)
+				output = "Really";
+			else
+				output = "No...I was clearly just making it up...no shit Sherlock";
+			alchemyFlag = false;
 		}
+	//}
 		
 		if(alchemyFlag){
 			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
@@ -173,6 +171,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
 					output = generateMessage(words, "when"); 
+				}
+				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("why"))
+				{
+					output = generateMessage(words, "why"); 
 				}
 			}
 		}
@@ -254,7 +256,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
         	 Random rand = new Random();
         	 int r = rand.nextInt(timeFrames.length);
         	 return timeFrames[r];
-         }
+         }else if(key.equals("why")){
+        	 SPhraseSpec p = nlgFactory.createClause();
+	         p.setSubject("Why? Because I" );
+	         p.setVerb("give");
+	         p.setObject("no shits about");
+	         p.setFeature(Feature.TENSE, Tense.FUTURE);
+	         if(words.size()!=0){
+	        	 p.setPostModifier(words.get(0));
+	         } else {
+	        	 p.setPostModifier("it");
+	         }
+	         return realiser.realiseSentence(p);
+	     }
          return("I litterally have no clue.");
 	}
 	
