@@ -47,7 +47,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
 	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","how's it going"};
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
-	private String timeFrames[] = new String[]{"at night","in the evening","in the morning","on the morrow","at twilight","before the break of dawn"};
+	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private boolean alchemyFlag =true;
 	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
@@ -143,12 +143,23 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		}
 		
 		if(alchemyFlag){
-			
-			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
-			for(int i =0; i < words.size(); i++){
-				System.out.println(words.get(i));
-			}	
-			output = generateMessage(words); 
+			if(msg.getMessageBody().contains("?"))
+			{
+				if(msg.getMessageBody().toLowerCase().contains("when "))
+				{
+					Random rand = new Random();
+					int index = rand.nextInt(timeFrames.length);
+					output=timeFrames[index];
+				}
+			}
+			else 
+			{
+				words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+				for(int i =0; i < words.size(); i++){
+					System.out.println(words.get(i));
+				}	
+				output = generateMessage(words);
+			}
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
