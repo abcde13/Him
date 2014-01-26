@@ -73,14 +73,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	
 	public void onReceive(final Context context, Intent intent)
 	{
-<<<<<<< HEAD
 		alchemyFlag = true;
 		Bundle bundle=intent.getExtras();
-		
-		
-=======
-		Bundle bundle=intent.getExtras();	
->>>>>>> 4e9d93ee5ef58162d635a4cb365f3cdfa4e6d788
 		
 		Object[] messages=(Object[])bundle.get("pdus");
 		SmsMessage[] sms=new SmsMessage[messages.length];
