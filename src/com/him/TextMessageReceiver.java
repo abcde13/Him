@@ -164,12 +164,11 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				} 
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
 				{
-					if(msg.getMessageBody().toLowerCase().equals("who are you?")){
-						output = "I'm Joraaver, and you will respect my authoritiauh" ;
-					} else {
+					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
+						output = "It doesn't matter who I am. What matters is my plan. You should respect my authoritiauh" ;
+					else {
 						output = generateMessage(words,"who");
-					}
-					
+					}					
 				}
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
@@ -237,8 +236,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
          NLGFactory nlgFactory = new NLGFactory(lexicon);
          Realiser realiser = new Realiser(lexicon);
          if(key.equals("what")){
-	        // NLGElement s1 = nlgFactory.createSentence(msg);
-	        // String output = realiser.realiseSentence(s1);
+
 	         SPhraseSpec p = nlgFactory.createClause();
 	         p.setSubject("The " + words.get(2));
 	         p.setVerb("is ");
@@ -276,7 +274,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	}
 	
 	private String generateMessage(String words, String key){
-		 Lexicon lexicon = Lexicon.getDefaultLexicon();
+		Lexicon lexicon = Lexicon.getDefaultLexicon();
         NLGFactory nlgFactory = new NLGFactory(lexicon);
         Realiser realiser = new Realiser(lexicon);
         if(key == "what"){
@@ -295,6 +293,45 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	   	         
 	   	         return realiser.realiseSentence(p);
         	}
+        	else if(words.contains("can") || words.contains("would") || words.contains("should") || words.contains("could") || words.contains("will")) {
+        		String subject="";
+        		String verb="";
+        		if(words.contains("can")) {
+        			subject = words.subSequence(words.indexOf("can")+3,words.length()-1).toString();
+        			verb = "can";
+        		}
+        		else if(words.contains("would")) {
+        			subject = words.subSequence(words.indexOf("would")+5,words.length()-1).toString();
+        			verb = "would";
+        		}
+        		else if(words.contains("should")) {
+        			subject = words.subSequence(words.indexOf("should")+6,words.length()-1).toString();
+        			verb = "should";
+        		}
+        		else if(words.contains("could")) {
+        			subject = words.subSequence(words.indexOf("could")+5,words.length()-1).toString();
+        			verb = "could";
+        		}
+        		else if(words.contains("will")) {
+        			subject = words.subSequence(words.indexOf("will")+4,words.length()-1).toString();
+        			verb = "will";
+        		}
+        		if(subject.contains("she "))
+        			subject = "She";
+        		else if(subject.contains("he "))
+        			subject = "He";
+        		else if(subject.contains("a ") || subject.contains("the "))
+       				subject = "It";
+       			else
+        			subject = "They";
+        			
+        		SPhraseSpec p = nlgFactory.createClause();
+   	           	p.setSubject(subject);
+   	           	p.setVerb(verb);
+   	  	       	p.setObject("lick my shit");
+   	   	         
+   	           	return realiser.realiseSentence(p);
+        	}	
         }
         return null;
 	}
