@@ -49,6 +49,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
 	private String timeFrames[] = new String[]{"at night","in the evening","in the morning","on the morrow","at twilight","before the break of dawn"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
+	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
+			"I don't know. you'll have to ask someone else", "Sorry, I have no idea"};
 	private boolean alchemyFlag =true;
 	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
@@ -148,7 +150,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			for(int i =0; i < words.size(); i++){
 				System.out.println(words.get(i));
 			}	
-			output = generateMessage(words); 
+			if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what")){
+				output = generateMessage(words, "what"); 
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
@@ -171,6 +174,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
             
  
 		}
+	}
 	
 	private void handleNotification(Context context, final SmsMessage msg,String output){
 		NotificationCompat.Builder mBuilder =
@@ -203,24 +207,31 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	}
 	
 
-	private String generateMessage(ArrayList<String> words){
+	private String generateMessage(ArrayList<String> words, String key){
 		 Lexicon lexicon = Lexicon.getDefaultLexicon();
          NLGFactory nlgFactory = new NLGFactory(lexicon);
          Realiser realiser = new Realiser(lexicon);
-        // NLGElement s1 = nlgFactory.createSentence(msg);
-        // String output = realiser.realiseSentence(s1);
-         SPhraseSpec p = nlgFactory.createClause();
-         p.setSubject("The " + words.get(2));
-         p.setVerb("is ");
-         
-         Random rand = new Random();
-		 int index = rand.nextInt(timeFrames.length);
-		 String str_time = timeFrames[index];
-
-         p.setObject(str_time);
-         
-         String output = realiser.realiseSentence(p);
-         return output;
+         if(key.equals("what")){
+	        // NLGElement s1 = nlgFactory.createSentence(msg);
+	        // String output = realiser.realiseSentence(s1);
+	         SPhraseSpec p = nlgFactory.createClause();
+	         p.setSubject("The " + words.get(2));
+	         p.setVerb("is ");
+	         
+	         Random rand = new Random();
+			 int index = rand.nextInt(timeFrames.length);
+			 String str_time = timeFrames[index];
+	
+	         p.setObject(str_time);
+	         
+	         String output = realiser.realiseSentence(p);
+	         return output;
+         } else if(key.equals("who")){
+        	 Random rand = new Random();
+        	 int r = rand.nextInt(who.length);
+        	 return who[r];
+         }
+         return("I litterally have no clue.");
 	}
 	private void addMessageToSent(Context context,String telNumber, String messageBody) {
         ContentValues sentSms = new ContentValues();
