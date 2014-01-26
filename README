@@ -1,0 +1,19 @@
+**********************************
+* Him, an automated text handler *
+**********************************
+
+v 0.0.1
+
+This is a native android application that makes
+automated texting extremely simple. Merely start
+the service, and Him will respond to all texts seamlessly.
+
+This app relies on the Alchemy API Library.
+In order for this to app to work, please make sure you
+install the Alchemy API Library. Then, in your project
+folder, right click and go to Android. Under the 'Library'
+section, add the downloaded Alchemy API library. You should be good to go!
+
+However, please use this at your own risk. This app has just been created after
+3 days of non-stop coding at HACKTECH, so we are not responsible for anything
+that happens to you because of this app, be it good or bad.
