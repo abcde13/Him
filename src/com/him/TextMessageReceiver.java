@@ -155,8 +155,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				{
 					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
 						output = generateMessage(words, "who");
-					} else {
+					} else if(words.size()>2) {
 						output = generateMessage(words, "what"); 
+					} else {
+						output = generateMessage(msg.getMessageBody(),"what");
 					}
 				} 
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
@@ -261,8 +263,20 @@ public class TextMessageReceiver extends BroadcastReceiver{
         NLGFactory nlgFactory = new NLGFactory(lexicon);
         Realiser realiser = new Realiser(lexicon);
         if(key == "what"){
-        	if(words.contains("was")){
-        		
+        	if(words.contains("was") || words.contains("is")){
+        		String subject;
+        		if(words.contains("was"))
+        			subject = words.subSequence(words.indexOf("was")+3,words.length()-1).toString();
+        		else 
+    				subject = words.subSequence(words.indexOf("is")+2,words.length()-1).toString();
+
+        		String verb = "be";
+        		SPhraseSpec p = nlgFactory.createClause();
+	   	         p.setSubject(subject);
+	   	         p.setVerb(verb);
+	   	         p.setObject("not worth mentioning");
+	   	         
+	   	         return realiser.realiseSentence(p);
         	}
         }
         return null;
