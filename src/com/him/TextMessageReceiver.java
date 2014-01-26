@@ -2,11 +2,15 @@ package com.him;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.http.client.utils.URIUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.orchestr8.android.api.AlchemyAPI;
 import com.orchestr8.android.api.AlchemyAPI_NamedEntityParams;
@@ -46,6 +50,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
 	private static final Uri SENT_MSGS_CONTET_PROVIDER = Uri.parse("content://sms/sent");
+	private ArrayList<String> words;
 	
 	public void onReceive(final Context context, Intent intent)
 	{
@@ -62,7 +67,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		String output = "Default";
 		
-		for(int i = 0; i < simpleInitiators.length; i++){
+		/*for(int i = 0; i < simpleInitiators.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
 					Random rand = new Random();
 					int index = rand.nextInt(simpleInitiators.length);
@@ -85,7 +90,6 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		}
 		if(output.equals("Default")){
 			for(int i = 0; i < formalTimes.length; i++){
-				System.out.println("HErE " + i);
 				if(msg.getMessageBody().toLowerCase().contains(formalTimes[i])){					
 					if(i == 0){
 						output = "morning";
@@ -126,11 +130,14 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					output = "No...I was clearly just making it up...no shit Sherlock";
 				alchemyFlag = false;
 			}
-		}
+		}*/
 		
 		if(alchemyFlag){
 			
-			SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+			for(int i =0; i < words.size(); i++){
+				System.out.println(words.get(i));
+			}
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
@@ -146,7 +153,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
                 	final String output = generateMessage(out);
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
                     handleNotification(context,msg,output);
-                    addMessageToSent(context,msg.getOriginatingAddress(),msg.getMessageBody());
+                    addMessageToSent(context,msg.getOriginatingAddress(),output);
                     
                     
                 }
@@ -206,10 +213,11 @@ public class TextMessageReceiver extends BroadcastReceiver{
         contentResolver.insert(SENT_MSGS_CONTET_PROVIDER, sentSms);
     }
 	
-	 private void SendAlchemyCall(String call, String msg)
+	 private ArrayList<String> SendAlchemyCall(String call, String msg)
 	    {
 	    	Document doc = null;
 	    	AlchemyAPI api = null;
+	    	ArrayList<String> al;
 	    	try
 	    	{
 	    		api = AlchemyAPI.GetInstanceFromString(AlchemyAPI_Key);
@@ -217,17 +225,57 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	    	catch( IllegalArgumentException ex )
 	    	{
 	    		System.out.println("Error loading AlchemyAPI.  Check that you have a valid AlchemyAPI key set in the AlchemyAPI_Key variable.  Keys available at alchemyapi.com.");
-	    		return;
+	    		return null;
 	    	}
 
 	    	try{
 	    			doc = api.TextGetRankedKeywords(msg);
-	    			System.out.println(doc +  " " + msg);
+	    			al= ShowDocInTextView(doc, false);
 	    	}
 	    	catch(Throwable t)
 	    	{
 	    		System.out.println("Error: " + t.getMessage());
+	    		return null;
 	    	}
+	    	return al;
+	    }
+	 
+	 private ArrayList<String> ShowDocInTextView(Document doc, boolean showSentiment)
+	    {
+		 	ArrayList<String> array = new ArrayList<String>();
+	    	
+	    	if( doc == null)
+	    		return null;
+	    	Element root = doc.getDocumentElement();
+	        NodeList items = root.getElementsByTagName("text");
+	        if( showSentiment )
+	        {
+	        	NodeList sentiments = root.getElementsByTagName("sentiment");
+		        for (int i=0;i<items.getLength();i++){
+		        	Node concept = items.item(i);
+		        	String astring = concept.getNodeValue();
+		        	astring = concept.getChildNodes().item(0).getNodeValue(); 
+		        	//textview.append("\n" + astring);
+		        	array.add(astring);
+		        	if( i < sentiments.getLength() )
+		        	{
+		        		Node sentiment = sentiments.item(i);
+		        		Node aNode = sentiment.getChildNodes().item(1);
+		        		Node bNode = aNode.getChildNodes().item(0);
+		        		array.add(" (" + bNode.getNodeValue()+")");
+		        	}
+		        }       	
+	        }
+	        else
+	        {
+		        for (int i=0;i<items.getLength();i++){
+		        	Node concept = items.item(i);
+		        	String astring = concept.getNodeValue();
+		        	astring = concept.getChildNodes().item(0).getNodeValue(); 
+		        	array.add("\n" + astring);
+		        }
+	        }
+	        return array;
 	    }
 }
 
