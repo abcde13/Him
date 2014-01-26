@@ -71,7 +71,12 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		String output = "Default";
 		
-		/*for(int i = 0; i < simpleInitiators.length; i++){
+		if(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[0]) || 
+				(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[1])) && 
+				msg.getMessageBody().length() < 6){
+			return;
+		}
+		for(int i = 0; i < simpleInitiators.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
 					Random rand = new Random();
 					int index = rand.nextInt(simpleInitiators.length);
@@ -134,7 +139,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					output = "No...I was clearly just making it up...no shit Sherlock";
 				alchemyFlag = false;
 			}
-		}*/
+		}
 		
 		if(alchemyFlag){
 			
@@ -277,7 +282,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		        		Node sentiment = sentiments.item(i);
 		        		Node aNode = sentiment.getChildNodes().item(1);
 		        		Node bNode = aNode.getChildNodes().item(0);
-		        		array.add(" (" + bNode.getNodeValue()+")");
+		        		array.add(bNode.getNodeValue());
 		        	}
 		        }       	
 	        }
@@ -287,7 +292,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		        	Node concept = items.item(i);
 		        	String astring = concept.getNodeValue();
 		        	astring = concept.getChildNodes().item(0).getNodeValue(); 
-		        	array.add("\n" + astring);
+		        	array.add(astring);
 		        }
 	        }
 	        return array;
