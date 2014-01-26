@@ -22,7 +22,7 @@ public class ReceiverService extends Service {
       // Let it continue running until it is stopped.
 	   
 	  if((MainActivity.receiving) == 0){
-	      Toast.makeText(this, "He is now monitoring your texts", Toast.LENGTH_LONG).show();
+	      Toast.makeText(this, "He is now monitoring your texts", Toast.LENGTH_SHORT).show();
 	      
 	      mSmsReceiver = new TextMessageReceiver();
 	      IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
@@ -40,6 +40,6 @@ public class ReceiverService extends Service {
       super.onDestroy();
       MainActivity.receiving = 0;
       this.unregisterReceiver(mSmsReceiver);
-      Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "He is no longer monitoring your texts", Toast.LENGTH_SHORT).show();
    }
 }

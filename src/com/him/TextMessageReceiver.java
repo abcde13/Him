@@ -47,9 +47,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String simpleInitiators[] = new String[]{"hi","hello","hey"};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
-	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","whats up", "what's up","how's it going","whaddup",
+	private String testSupInitiators[] = new String[]{"how are you","how are u","how's it going","sup","whassup","whatsup","whats up", "what's up","whaddup",
 			"whatup", "what up", "wuttup","wuzzup", "what's cookin good lookin"};
-	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
+	private String supInitiators[] = new String[]{"not too bad","really bored right now","bored as fuck","hacking furiously","nothing much","chilling","fucking your girlfriend"};
 	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
@@ -63,7 +63,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private ArrayList<String> words;
 	
 	private String insultKeywords[] = new String[]{"fuck","cunt","douche","dick","chode","bitch","pussy","fag","slut","bastard",
-			"vegan","jizz","tiny","twat","shit","cock"};
+			"vegan","jizz","tiny","twat","shit","cock","milf"};
 	
 	private String insultLibrary[] = new String[]{"Lick my shit","You jizz covered asshole","I do not give a flying fuck about you or your problems",
 			"I'd trade you for a bag of cunts in an instant","Go jerk your chode","Come at me tiny man - I bench 300","Would you like a side of fucks with that?",
@@ -105,8 +105,14 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			for(int i = 0; i < testSupInitiators.length; i++){
 					if(msg.getMessageBody().toLowerCase().contains(testSupInitiators[i])){
 						Random rand = new Random();
-						int index = rand.nextInt(supInitiators.length);
-						output = supInitiators[index];
+						if(i >= 0 && i < 3){
+							int index = rand.nextInt(3);
+							output = supInitiators[index];
+						} else {
+							int index = rand.nextInt(supInitiators.length-1);
+							output = supInitiators[index+1];
+						}
+						
 						alchemyFlag = false;
 						break; 
 					} 
@@ -119,6 +125,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 						if(i == 0){
 							output = "morning";
 						} else if (i == 3 || i == 4){
+							if(!msg.getMessageBody().toLowerCase().equals(formalTimes[i])){
+								break;
+							}
 							output = "Gdnite";
 						} else {
 							Random rand = new Random();
@@ -145,7 +154,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		} 
 		
 		if(output.equals("Talk to u in a bit. Pretty busy")){
-			if(msg.getMessageBody().toLowerCase().equals("really?")) {
+			if(msg.getMessageBody().toLowerCase().equals("really?") || msg.getMessageBody().toLowerCase().equals("rlly?")) {
 				Random rand = new Random();
 				int index = rand.nextInt(2);
 				if(index == 0)
@@ -215,7 +224,13 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					output = "??";
 				}
 			} else {
-				output = "??";
+				Random rand = new Random();
+				int index = rand.nextInt(2);
+				if(index == 0){
+					output = "Good to hear";
+				} else {
+					output = "Ouch sorry to hear that";
+				}
 			}
 		}
 
