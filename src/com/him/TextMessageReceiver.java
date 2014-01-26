@@ -180,7 +180,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private void handleNotification(Context context, final SmsMessage msg,String output){
 		NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.him_launcher)
                 .setContentTitle("Him to " + msg.getOriginatingAddress())
                 .setContentText(output);
         // Creates an explicit intent for an Activity in your app
