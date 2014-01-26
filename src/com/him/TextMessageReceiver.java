@@ -152,6 +152,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			}	
 			if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what")){
 				output = generateMessage(words, "what"); 
+			} else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who")){
+				output = generateMessage(words, "who"); 
+			}
+
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
@@ -171,9 +175,6 @@ public class TextMessageReceiver extends BroadcastReceiver{
             };
 
             new Handler().postDelayed(r, 3000);
-            
- 
-		}
 	}
 	
 	private void handleNotification(Context context, final SmsMessage msg,String output){
