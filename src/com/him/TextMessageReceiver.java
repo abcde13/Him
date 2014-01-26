@@ -154,7 +154,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
 				{
 					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
-						output = generateMessage(words, "who");
+						output = generateMessage(words, "when");
 					} else {
 						output = generateMessage(words, "what"); 
 					}
@@ -163,6 +163,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				{
 					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
 						output = "It doesn't matter who I am. What matters is my plan. You should respect my authoritiauh" ;
+					output = generateMessage(words, "who");
 				}
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
@@ -226,8 +227,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
          NLGFactory nlgFactory = new NLGFactory(lexicon);
          Realiser realiser = new Realiser(lexicon);
          if(key.equals("what")){
-	        // NLGElement s1 = nlgFactory.createSentence(msg);
-	        // String output = realiser.realiseSentence(s1);
+
 	         SPhraseSpec p = nlgFactory.createClause();
 	         p.setSubject("The " + words.get(2));
 	         p.setVerb("is ");
