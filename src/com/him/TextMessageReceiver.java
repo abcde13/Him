@@ -47,9 +47,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String simpleInitiators[] = new String[]{"hi","hello","hey"};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
-	private String testSupInitiators[] = new String[]{"how are you","how are u","how's it going","sup","whassup","whatsup","whats up", "what's up","whaddup",
+	private String testSupInitiators[] = new String[]{"how are you","how are u","how's it going","hows it going","sup","whassup","whatsup","whats up", "what's up","whaddup",
 			"whatup", "what up", "wuttup","wuzzup", "what's cookin good lookin"};
-	private String supInitiators[] = new String[]{"not too bad","really bored right now","bored as fuck","hacking furiously","nothing much","chilling","fucking your girlfriend"};
+	private String supInitiators[] = new String[]{"not too bad","really bored right now","hacking furiously","nothing much","chilling"};
 	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
@@ -62,14 +62,14 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private static final Uri SENT_MSGS_CONTET_PROVIDER = Uri.parse("content://sms/sent");
 	private ArrayList<String> words;
 	
-	private String insultKeywords[] = new String[]{"fuck","cunt","douche","dick","chode","bitch","pussy","fag","slut","bastard",
+	private String insultKeywords[] = new String[]{"hell","fuck","cunt","douche","dick","chode","bitch","pussy","fag","slut","bastard",
 			"vegan","jizz","tiny","twat","shit","cock","milf","whore"};
 	
-	private String insultLibrary[] = new String[]{"Lick my shit","You jizz covered asshole","I do not give a flying fuck about you or your problems",
+	private String insultLibrary[] = new String[]{"You little butmunch", "Screw you"};/*"You jizz covered asshole","I do not give a flying fuck about you or your problems",
 			"I'd trade you for a bag of cunts in an instant","Go jerk your chode","Come at me tiny man - I bench 300","Would you like a side of fucks with that?",
 			"Congratulations!,you've been nominated for biggest douche in the universe!","Hey! I heard ur dick has grown to four sand grain radii! Well done!",
 			"U mad bro? U should be. Ur getting pwned by a computer program", "Well good morning professor dickweed", "I will wreck you like an Asian driver",
-			"Man you must love just getting on your knees","You're as useless as a GTA stoplight"};
+			"Man you must love just getting on your knees","You're as useless as a GTA stoplight"};*/
 
 //	private int hour;
 	
@@ -87,19 +87,28 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		final SmsMessage msg = sms[0];
 		String output = "Talk to u in a bit. Pretty busy";
 		
+		if(msg.getMessageBody().toLowerCase().equals("yo")){
+			Random rand = new Random();
+			int index = rand.nextInt(simpleInitiators.length);
+			output = simpleInitiators[index];
+			alchemyFlag = false;
+		}
+		
 		if((msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[0]) || 
 				(msg.getMessageBody().toLowerCase().contains(END_OF_THE_FUCKING_CONVERSATION[1]))) && 
 				msg.getMessageBody().length() < 6){
 			return;
 		}
-		for(int i = 0; i < simpleInitiators.length; i++){
-				if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
-					Random rand = new Random();
-					int index = rand.nextInt(simpleInitiators.length);
-					output = simpleInitiators[index];
-					alchemyFlag = false;
-					break; 
-				} 
+		if(output.equals("Talk to u in a bit. Pretty busy")){
+			for(int i = 0; i < simpleInitiators.length; i++){
+					if(msg.getMessageBody().toLowerCase().contains(simpleInitiators[i])){
+						Random rand = new Random();
+						int index = rand.nextInt(simpleInitiators.length);
+						output = simpleInitiators[index];
+						alchemyFlag = false;
+						break; 
+					} 
+			}
 		}
 		if(output.equals("Talk to u in a bit. Pretty busy")){
 			for(int i = 0; i < testSupInitiators.length; i++){
@@ -190,7 +199,10 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			
 			if(msg.getMessageBody().contains("?") && msg.getMessageBody().length() > 5)
 			{
-				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().contains("what"))
+				if(msg.getMessageBody().toLowerCase().contains("what are")){
+					output = "I have no clue. Sorry mate";
+				} 
+				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().contains("what"))
 				{
 					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
 						output = generateMessage(words, "when");
