@@ -44,16 +44,18 @@ import android.telephony.SmsMessage;
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
-	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
+	private String simpleInitiators[] = new String[]{"hi","hello","hey"};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
-	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","whats up", "what's up","how's it going"};
+	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","whats up", "what's up","how's it going","whaddup",
+			"whatup", "what up", "wuttup","wuzzup", "what's cookin good lookin"};
 	private String supInitiators[] = new String[]{"nothing much. u?","bored as fuck","wassup","fucking your girlfriend","sup"};
 	private String timeFrames[] = new String[]{"at night","around 5ish","3 in the morning","tomorrow","at about 7","when I say so"};
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
 			"I don't know. you'll have to ask someone else", "Sorry, I have no idea"};
 	private String why[] = new String[]{"Why? Because I've stopped caring, and so should you.", "How should I know?"};
+	private String where[] = new String[]{"Anywhere", "I have no clue","Around the corner", "In Santa Monica", "I honestly don't care"};
 	private boolean alchemyFlag =true;
 	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
@@ -73,15 +75,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	
 	public void onReceive(final Context context, Intent intent)
 	{
-<<<<<<< HEAD
 		alchemyFlag = true;
 		Bundle bundle=intent.getExtras();
-		
-		
-=======
-		Bundle bundle=intent.getExtras();	
->>>>>>> 4e9d93ee5ef58162d635a4cb365f3cdfa4e6d788
-		
+
 		Object[] messages=(Object[])bundle.get("pdus");
 		SmsMessage[] sms=new SmsMessage[messages.length];
 		
@@ -160,7 +156,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			}
 		}
 		
-		if(output.equals("Default")){
+		if(output.equals("Talk to u in a bit. Pretty busy")){
 			for(int i = 0; i < insultKeywords.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(insultKeywords[i])){
 					Random rand = new Random();
@@ -174,11 +170,16 @@ public class TextMessageReceiver extends BroadcastReceiver{
 		} 
 		
 		if(alchemyFlag){
-			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
-			for(int i =0; i < words.size(); i++){
-				System.out.println(words.get(i));
+			try{
+				words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
+				for(int i =0; i < words.size(); i++){
+					System.out.println(words.get(i));
+				}
+			}catch(Exception e){
+				output = "I'll talk to you soon enough. Hold on.";
 			}
-			if(msg.getMessageBody().contains("?"))
+			
+			if(msg.getMessageBody().contains("?") && msg.getMessageBody().length() > 5)
 			{
 				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
 				{
@@ -206,6 +207,15 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				{
 					output = generateMessage(words, "why"); 
 				}
+				else if(msg.getMessageBody().subSequence(0,5).toString().toLowerCase().equals("where"))
+				{
+					output = generateMessage(msg.getMessageBody(), "where"); 
+				} 
+				else {
+					output = "??";
+				}
+			} else {
+				output = "??";
 			}
 		}
 
@@ -215,17 +225,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
         final String out = output;
         // this is the function that does all the magic
             
-            Runnable r = new Runnable()
+            /*Runnable r = new Runnable()
             {
                 public void run() 
-                {
+                {*/
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, out, pi, null);
                     handleNotification(context,msg,out);
                     addMessageToSent(context,msg.getOriginatingAddress(),out);                   
-                }
+               /* }
             };
 
-            new Handler().postDelayed(r, 0);
+            new Handler().postDelayed(r, 0);*/
 	}
 	
 	private void handleNotification(Context context, final SmsMessage msg,String output){
@@ -359,6 +369,20 @@ public class TextMessageReceiver extends BroadcastReceiver{
    	   	         
    	           	return realiser.realiseSentence(p);
         	}	
+        } else if (key == "where"){
+        	if(words.contains(" u ") || words.contains(" you ")){
+        		Random k = new Random();
+        		int choose = k.nextInt(2);
+        		if(choose == 1){
+        			return where[where.length-1];
+        		} else {
+        			return where[choose];
+        		}
+        	} else {
+        		Random k = new Random();
+        		int choose = k.nextInt(3);
+        		return(where[choose+1]);
+        	}
         }
         return null;
 	}

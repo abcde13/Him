@@ -39,7 +39,7 @@ public class ReceiverService extends Service {
    public void onDestroy() {
       super.onDestroy();
       MainActivity.receiving = 0;
-      //this.unregisterReceiver(mSmsReceiver);
+      this.unregisterReceiver(mSmsReceiver);
       Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
    }
 }
