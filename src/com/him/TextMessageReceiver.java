@@ -190,17 +190,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			
 			if(msg.getMessageBody().contains("?") && msg.getMessageBody().length() > 5)
 			{
-				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
+				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().contains("what"))
 				{
 					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
 						output = generateMessage(words, "when");
 					} else if(words.size()>2) {
 						output = generateMessage(words, "what"); 
 					} else {
-						output = generateMessage(msg.getMessageBody(),"what");
+						output = generateMessage(msg.getMessageBody().toLowerCase(),"what");
 					}
 				} 
-				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
+				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().contains("who"))
 				{
 					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
 						output = "It doesn't matter who I am. What matters is my plan. You should respect my authoritiauh" ;
@@ -218,7 +218,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				}
 				else if(msg.getMessageBody().subSequence(0,5).toString().toLowerCase().equals("where"))
 				{
-					output = generateMessage(msg.getMessageBody(), "where"); 
+					output = generateMessage(msg.getMessageBody().toLowerCase(), "where"); 
 				} 
 				else {
 					output = "??";
@@ -323,12 +323,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
         NLGFactory nlgFactory = new NLGFactory(lexicon);
         Realiser realiser = new Realiser(lexicon);
         if(key == "what"){
-        	if(words.contains("was") || words.contains("is")){
-        		String subject;
+        	if(words.contains("was") || words.contains("is") || words.contains("what's") || words.contains("whats")){
+        		String subject = "";
         		if(words.contains("was"))
         			subject = words.subSequence(words.indexOf("was")+3,words.length()-1).toString();
-        		else 
+        		else if(words.contains("is")){
     				subject = words.subSequence(words.indexOf("is")+2,words.length()-1).toString();
+        		} else if (words.contains("what's") ) {
+        			subject = words.subSequence(words.indexOf("what's")+6,words.length()-1).toString();
+        		} else if ( words.contains("whats")){
+        			subject = words.subSequence(words.indexOf("whats")+5,words.length()-1).toString();
+        		}
 
         		String verb = "be";
         		SPhraseSpec p = nlgFactory.createClause();
