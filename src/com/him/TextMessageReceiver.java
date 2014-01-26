@@ -4,6 +4,7 @@ package com.him;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Random;
 
 import org.apache.http.client.utils.URIUtils;
@@ -18,6 +19,7 @@ import com.orchestr8.android.api.AlchemyAPI_NamedEntityParams;
 import simplenlg.framework.NLGElement;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
+import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
@@ -51,6 +53,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
 	private static final Uri SENT_MSGS_CONTET_PROVIDER = Uri.parse("content://sms/sent");
 	private ArrayList<String> words;
+
+	private int hour;
 	
 	public void onReceive(final Context context, Intent intent)
 	{
@@ -137,7 +141,8 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
 			for(int i =0; i < words.size(); i++){
 				System.out.println(words.get(i));
-			}
+			}	
+			output = generateMessage(words); 
 		}
 
 		Intent i= new Intent(context,ReceiverService.class);
@@ -150,12 +155,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
             {
                 public void run() 
                 {
-                	final String output = generateMessage(out);
-                    sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
-                    handleNotification(context,msg,output);
-                    addMessageToSent(context,msg.getOriginatingAddress(),output);
-                    
-                    
+                    sendsms.sendTextMessage(msg.getOriginatingAddress(), null, out, pi, null);
+                    handleNotification(context,msg,out);
+                    addMessageToSent(context,msg.getOriginatingAddress(),out);                   
                 }
             };
 
@@ -195,13 +197,26 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	}
 	
 
-	private String generateMessage(String msg){
+	private String generateMessage(ArrayList<String> words){
 		 Lexicon lexicon = Lexicon.getDefaultLexicon();
          NLGFactory nlgFactory = new NLGFactory(lexicon);
          Realiser realiser = new Realiser(lexicon);
-         NLGElement s1 = nlgFactory.createSentence(msg);
-         String output = realiser.realiseSentence(s1);
-
+        // NLGElement s1 = nlgFactory.createSentence(msg);
+        // String output = realiser.realiseSentence(s1);
+         SPhraseSpec p = nlgFactory.createClause();
+         p.setSubject("The" + words.get(2));
+         p.setVerb("is at");
+         
+         String time = "";
+         if(words.contains("time"))
+         {
+        	 Calendar cday = Calendar.getInstance();
+        	 hour = Calendar.HOUR_OF_DAY;
+        	 time = cday.toString();
+         }
+         p.setObject(Integer.toString(hour));
+         
+         String output = realiser.realiseSentence(p);
          return output;
 	}
 	private void addMessageToSent(Context context,String telNumber, String messageBody) {
