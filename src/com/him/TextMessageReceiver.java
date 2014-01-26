@@ -90,33 +90,36 @@ public class TextMessageReceiver extends BroadcastReceiver{
 					break; 
 				} 
 		}
-		for(int i = 0; i < testSupInitiators.length; i++){
-				if(msg.getMessageBody().toLowerCase().contains(testSupInitiators[i])){
-					Random rand = new Random();
-					int index = rand.nextInt(supInitiators.length);
-					output = supInitiators[index];
-					alchemyFlag = false;
-					break; 
-				} 
-						
-		}
-		for(int i = 0; i < formalTimes.length; i++){
-				if(msg.getMessageBody().toLowerCase().contains(formalTimes[i])){					
-					if(i == 0){
-						output = "morning";
-					} else if (i == 3 || i == 4){
-						output = "Gdnite";
-					} else {
+		if(output.equals("Talk to u in a bit. Pretty busy")){
+			for(int i = 0; i < testSupInitiators.length; i++){
+					if(msg.getMessageBody().toLowerCase().contains(testSupInitiators[i])){
 						Random rand = new Random();
-						int index = rand.nextInt(2);
-						output = formalTimes[index+1];
-					}
-					alchemyFlag = false;
-					break; 
-				} 
-						
+						int index = rand.nextInt(supInitiators.length);
+						output = supInitiators[index];
+						alchemyFlag = false;
+						break; 
+					} 
+							
+			}
 		}
-
+		if(output.equals("Talk to u in a bit. Pretty busy")){
+			for(int i = 0; i < formalTimes.length; i++){
+					if(msg.getMessageBody().toLowerCase().contains(formalTimes[i])){					
+						if(i == 0){
+							output = "morning";
+						} else if (i == 3 || i == 4){
+							output = "Gdnite";
+						} else {
+							Random rand = new Random();
+							int index = rand.nextInt(2);
+							output = formalTimes[index+1];
+						}
+						alchemyFlag = false;
+						break; 
+					} 
+							
+			}
+		}
 		if(output.equals("Talk to u in a bit. Pretty busy")){
 			for(int i = 0; i < closers.length; i++){
 				if(msg.getMessageBody().toLowerCase().contains(closers[i])){
@@ -130,17 +133,17 @@ public class TextMessageReceiver extends BroadcastReceiver{
 			}
 		} 
 		
-		//if(output.equals("Talk to u in a bit. Pretty busy")){
-		if(msg.getMessageBody().toLowerCase().equals("really?")) {
-			Random rand = new Random();
-			int index = rand.nextInt(2);
-			if(index == 0)
-				output = "Really";
-			else
-				output = "No...I was clearly just making it up...no shit Sherlock";
-			alchemyFlag = false;
+		if(output.equals("Talk to u in a bit. Pretty busy")){
+			if(msg.getMessageBody().toLowerCase().equals("really?")) {
+				Random rand = new Random();
+				int index = rand.nextInt(2);
+				if(index == 0)
+					output = "Really";
+				else
+					output = "No...I was clearly just making it up...no shit Sherlock";
+				alchemyFlag = false;
+			}
 		}
-	//}
 		
 		if(alchemyFlag){
 			words = SendAlchemyCall(AlchemyAPI_Key, msg.getMessageBody());
@@ -152,7 +155,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("what"))
 				{
 					if(msg.getMessageBody().subSequence(5, msg.getMessageBody().length()).toString().contains("time")){
-						output = generateMessage(words, "who");
+						output = generateMessage(words, "when");
 					} else if(words.size()>2) {
 						output = generateMessage(words, "what"); 
 					} else {
