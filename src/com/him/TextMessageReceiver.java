@@ -161,8 +161,12 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				} 
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
 				{
-					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
+					if(msg.getMessageBody().toLowerCase().equals("who are you?")){
 						output = "I'm Joraaver, and you will respect my authoritiauh" ;
+					} else {
+						output = generateMessage(words,"who");
+					}
+					
 				}
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
@@ -251,6 +255,19 @@ public class TextMessageReceiver extends BroadcastReceiver{
          }
          return("I litterally have no clue.");
 	}
+	
+	private String generateMessage(String words, String key){
+		 Lexicon lexicon = Lexicon.getDefaultLexicon();
+        NLGFactory nlgFactory = new NLGFactory(lexicon);
+        Realiser realiser = new Realiser(lexicon);
+        if(key == "what"){
+        	if(words.contains("was")){
+        		
+        	}
+        }
+        return null;
+	}
+	
 	private void addMessageToSent(Context context,String telNumber, String messageBody) {
         ContentValues sentSms = new ContentValues();
         sentSms.put(TELEPHON_NUMBER_FIELD_NAME, telNumber);
