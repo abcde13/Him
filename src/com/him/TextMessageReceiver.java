@@ -146,7 +146,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
                 	final String output = generateMessage(out);
                     sendsms.sendTextMessage(msg.getOriginatingAddress(), null, output, pi, null);
                     handleNotification(context,msg,output);
-                    addMessageToSent(context,msg.getOriginatingAddress(),msg.getMessageBody());
+                    addMessageToSent(context,msg.getOriginatingAddress(),output);
                     
                     
                 }
