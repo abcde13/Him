@@ -44,7 +44,7 @@ import android.telephony.SmsMessage;
 public class TextMessageReceiver extends BroadcastReceiver{
 	public String AlchemyAPI_Key = "934d4b23c6ad46ac22f86be02c44aa8937e03ab6";
 	
-	private String simpleInitiators[] = new String[]{"hi ","hello ","hey ","yo "};
+	private String simpleInitiators[] = new String[]{"hi","hello","hey","yo"};
 	private String formalTimes[] = new String[]{"morn", "afternoon", "evening", "night", "nite"};
 	private String closers[] = new String[]{"bye","l8er","later","cya","ttyl","bb"};
 	private String testSupInitiators[] = new String[]{"sup","whassup","whatsup","whats up", "what's up","how's it going"};
@@ -53,6 +53,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	private String END_OF_THE_FUCKING_CONVERSATION[] = new String[]{"lol","haha"};
 	private String who[] = new String[]{"i'm not sure", "I can't say for sure...", 
 			"I don't know. you'll have to ask someone else", "Sorry, I have no idea"};
+	private String why[] = new String[]{"Why? Because I've stopped caring, and so should you.", "How should I know?"};
 	private boolean alchemyFlag =true;
 	private static final String TELEPHON_NUMBER_FIELD_NAME = "address";
 	private static final String MESSAGE_BODY_FIELD_NAME = "body";
@@ -63,6 +64,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 	
 	public void onReceive(final Context context, Intent intent)
 	{
+		alchemyFlag = true;
 		Bundle bundle=intent.getExtras();
 		
 		
@@ -197,7 +199,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
                 }
             };
 
-            new Handler().postDelayed(r, 3000);
+            new Handler().postDelayed(r, 0);
 	}
 	
 	private void handleNotification(Context context, final SmsMessage msg,String output){
@@ -258,17 +260,9 @@ public class TextMessageReceiver extends BroadcastReceiver{
         	 int r = rand.nextInt(timeFrames.length);
         	 return timeFrames[r];
          }else if(key.equals("why")){
-        	 SPhraseSpec p = nlgFactory.createClause();
-	         p.setSubject("Why? Because I" );
-	         p.setVerb("give");
-	         p.setObject("no shits about");
-	         p.setFeature(Feature.TENSE, Tense.FUTURE);
-	         if(words.size()!=0){
-	        	 p.setPostModifier(words.get(0));
-	         } else {
-	        	 p.setPostModifier("it");
-	         }
-	         return realiser.realiseSentence(p);
+        	 Random rand = new Random();
+        	 int r = rand.nextInt(why.length);
+        	 return why[r];
 	     }
          return("I litterally have no clue.");
 	}
@@ -316,19 +310,26 @@ public class TextMessageReceiver extends BroadcastReceiver{
         			subject = words.subSequence(words.indexOf("will")+4,words.length()-1).toString();
         			verb = "will";
         		}
-        		if(subject.contains("she "))
+        		if(subject.contains(" she "))
         			subject = "She";
-        		else if(subject.contains("he "))
+        		else if(subject.contains(" he "))
         			subject = "He";
-        		else if(subject.contains("a ") || subject.contains("the "))
+        		else if(subject.contains(" a ") || subject.contains(" the "))
        				subject = "It";
-       			else
-        			subject = "They";
+       			else if(subject.contains(" u ") || subject.contains(" you ")){
+       				subject= "I";
+       			} else {
+       				subject ="They";
+       			}
         			
         		SPhraseSpec p = nlgFactory.createClause();
    	           	p.setSubject(subject);
    	           	p.setVerb(verb);
-   	  	       	p.setObject("lick my shit");
+   	           	if(subject!="I" ){
+   	           		p.setObject("lick my shit");
+   	           	} else {
+   	           		p.setObject("move forward, and never falter");
+   	           	}
    	   	         
    	           	return realiser.realiseSentence(p);
         	}	

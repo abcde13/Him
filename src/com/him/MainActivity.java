@@ -52,8 +52,10 @@ public class MainActivity extends Activity {
 		{
 			stopService(new Intent(getBaseContext(), ReceiverService.class));
 			button.setText("Hell yeah baby!");
+			button.setBackgroundColor(getResources().getColor(R.color.green));
 		} else {
 			button.setText("Stop him now");
+			button.setBackgroundColor(getResources().getColor(R.color.red));
 			startService(new Intent(getBaseContext(), ReceiverService.class));
 		}
 	}
