@@ -158,7 +158,7 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
 				{
 					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
-						output = "I'm Joraaver, and you will respect my authoritiauh" ;
+						output = "It doesn't matter who I am. What matters is my plan. You should respect my authoritiauh" ;
 				}
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
