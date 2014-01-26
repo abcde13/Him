@@ -161,18 +161,11 @@ public class TextMessageReceiver extends BroadcastReceiver{
 				} 
 				else if(msg.getMessageBody().subSequence(0,3).toString().toLowerCase().equals("who"))
 				{
-<<<<<<< HEAD
 					if(msg.getMessageBody().toLowerCase().equals("who are you?"))
 						output = "It doesn't matter who I am. What matters is my plan. You should respect my authoritiauh" ;
-					output = generateMessage(words, "who");
-=======
-					if(msg.getMessageBody().toLowerCase().equals("who are you?")){
-						output = "I'm Joraaver, and you will respect my authoritiauh" ;
-					} else {
+					else {
 						output = generateMessage(words,"who");
-					}
-					
->>>>>>> cee41b53bb25d9b330e60686f32ac0fb8ea6585f
+					}					
 				}
 				else if(msg.getMessageBody().subSequence(0,4).toString().toLowerCase().equals("when"))
 				{
